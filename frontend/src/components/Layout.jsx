@@ -3,13 +3,16 @@ import { useState } from 'react';
 import {
   LayoutDashboard, FileText, Users2, Megaphone, Hash, BookTemplate,
   BarChart3, Swords, Mic2, MessageSquareReply, UsersRound, FileBarChart,
-  CalendarDays, Sparkles, LogOut, Menu, X, ChevronRight
+  CalendarDays, Sparkles, LogOut, Menu, X, ChevronRight, Clock, TrendingUp
 } from 'lucide-react';
 
 const nav = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/posts', icon: FileText, label: 'Posts' },
   { to: '/calendar', icon: CalendarDays, label: 'Calendar' },
+  { to: '/content-calendar', icon: CalendarDays, label: 'AI Content Calendar' },
+  { to: '/scheduled-posts', icon: Clock, label: 'Scheduled Posts' },
+  { to: '/performance-analytics', icon: TrendingUp, label: 'Performance Analytics' },
   { to: '/accounts', icon: Users2, label: 'Accounts' },
   { to: '/campaigns', icon: Megaphone, label: 'Campaigns' },
   { to: '/hashtags', icon: Hash, label: 'Hashtags' },
@@ -21,6 +24,8 @@ const nav = [
   { to: '/team', icon: UsersRound, label: 'Team' },
   { to: '/reports', icon: FileBarChart, label: 'Reports' },
   { to: '/ai-generator', icon: Sparkles, label: 'AI Generator' },
+  { to: '/ai-insights', icon: TrendingUp, label: 'AI Insights' },
+  { to: '/custom-views', icon: TrendingUp, label: 'Social Analytics' },
 ];
 
 export default function Layout() {
