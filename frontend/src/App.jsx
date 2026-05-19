@@ -19,6 +19,7 @@ import ContentCalendar from './pages/ContentCalendar';
 import ScheduledPosts from './pages/ScheduledPosts';
 import PerformanceAnalytics from './pages/PerformanceAnalytics';
 import AIInsights from './pages/AIInsights';
+import CustomViewsPage from './pages/CustomViewsPage';
 
 // === Batch 07 Gaps & Frontend Mounts ===
 import CfAgenticSocialManager from './pages/CfAgenticSocialManager';
@@ -69,6 +70,7 @@ export default function App() {
         <Route path="scheduled-posts" element={<ScheduledPosts />} />
         <Route path="performance-analytics" element={<PerformanceAnalytics />} />
         <Route path="ai-insights" element={<AIInsights />} />
+        <Route path="custom-views" element={<CustomViewsPage />} />
       </Route>
           // === Batch 07 Gaps & Frontend Mounts ===
           <Route path='/cf-agentic-social-manager' element={<CfAgenticSocialManager />} />

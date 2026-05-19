@@ -25,6 +25,7 @@ const nav = [
   { to: '/reports', icon: FileBarChart, label: 'Reports' },
   { to: '/ai-generator', icon: Sparkles, label: 'AI Generator' },
   { to: '/ai-insights', icon: TrendingUp, label: 'AI Insights' },
+  { to: '/custom-views', icon: TrendingUp, label: 'Social Analytics' },
 ];
 
 export default function Layout() {

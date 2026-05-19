@@ -35,6 +35,7 @@ app.use('/api/calendar', require('./routes/calendar'));
 app.use('/api/ai', require('./routes/ai'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/scheduler', require('./routes/scheduler'));
+app.use('/api/custom-views', require('./routes/customViews'));
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
