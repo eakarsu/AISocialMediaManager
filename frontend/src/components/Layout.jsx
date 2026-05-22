@@ -16,6 +16,7 @@ const nav = [
   { to: '/accounts', icon: Users2, label: 'Accounts' },
   { to: '/campaigns', icon: Megaphone, label: 'Campaigns' },
   { to: '/hashtags', icon: Hash, label: 'Hashtags' },
+  { to: '/hashtag-fatigue', icon: Hash, label: 'Hashtag Fatigue' },
   { to: '/templates', icon: BookTemplate, label: 'Templates' },
   { to: '/analytics', icon: BarChart3, label: 'Analytics' },
   { to: '/competitors', icon: Swords, label: 'Competitors' },

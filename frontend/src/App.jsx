@@ -19,6 +19,7 @@ import ContentCalendar from './pages/ContentCalendar';
 import ScheduledPosts from './pages/ScheduledPosts';
 import PerformanceAnalytics from './pages/PerformanceAnalytics';
 import AIInsights from './pages/AIInsights';
+import HashtagFatigue from './pages/HashtagFatigue';
 import CustomViewsPage from './pages/CustomViewsPage';
 
 // === Batch 07 Gaps & Frontend Mounts ===
@@ -39,6 +40,9 @@ import GapNoEmployeeAdvocacyProgram from './pages/GapNoEmployeeAdvocacyProgram';
 import GapNoPaidAdvertisingManagement from './pages/GapNoPaidAdvertisingManagement';
 import GapNoInfluencerOutreachWorkflow from './pages/GapNoInfluencerOutreachWorkflow';
 import GapNoCrisisDetectionalertsOnSocialListenin from './pages/GapNoCrisisDetectionalertsOnSocialListenin';
+import CodexCustomVizFeature from './pages/CodexCustomVizFeature';
+import CodexOperationsFeature from './pages/CodexOperationsFeature';
+
 // === End Batch 07 ===
 
 
@@ -50,6 +54,9 @@ function ProtectedRoute({ children }) {
 export default function App() {
   return (
     <Routes>
+        <Route path="/codex/custom-viz" element={<ProtectedRoute><CodexCustomVizFeature /></ProtectedRoute>} />
+        <Route path="/codex/operations" element={<ProtectedRoute><CodexOperationsFeature /></ProtectedRoute>} />
+
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<Dashboard />} />
@@ -70,6 +77,7 @@ export default function App() {
         <Route path="scheduled-posts" element={<ScheduledPosts />} />
         <Route path="performance-analytics" element={<PerformanceAnalytics />} />
         <Route path="ai-insights" element={<AIInsights />} />
+        <Route path="hashtag-fatigue" element={<HashtagFatigue />} />
         <Route path="custom-views" element={<CustomViewsPage />} />
       </Route>
           // === Batch 07 Gaps & Frontend Mounts ===

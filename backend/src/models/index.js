@@ -168,6 +168,25 @@ const Report = sequelize.define('Report', {
   summary: { type: DataTypes.TEXT },
 });
 
+// Scheduled Post (custom-views)
+const ScheduledPost = sequelize.define('ScheduledPost', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  platform: { type: DataTypes.STRING, allowNull: false },
+  content: { type: DataTypes.TEXT, allowNull: false },
+  imageUrl: { type: DataTypes.STRING },
+  scheduledAt: { type: DataTypes.DATE, allowNull: false },
+  status: { type: DataTypes.ENUM('queued', 'posted', 'failed'), defaultValue: 'queued' },
+}, { tableName: 'scheduled_posts' });
+
+// Approval Log (custom-views)
+const ApprovalLog = sequelize.define('ApprovalLog', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  postId: { type: DataTypes.INTEGER, allowNull: false },
+  decision: { type: DataTypes.ENUM('approved', 'rejected', 'edits_requested'), allowNull: false },
+  comment: { type: DataTypes.TEXT },
+  reviewer: { type: DataTypes.STRING },
+}, { tableName: 'approval_log' });
+
 // Associations
 Account.belongsTo(User);
 Post.belongsTo(User);
@@ -188,4 +207,6 @@ module.exports = {
   AutoReply,
   TeamMember,
   Report,
+  ScheduledPost,
+  ApprovalLog,
 };

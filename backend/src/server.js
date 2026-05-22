@@ -36,6 +36,7 @@ app.use('/api/ai', require('./routes/ai'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/scheduler', require('./routes/scheduler'));
 app.use('/api/custom-views', require('./routes/customViews'));
+app.use('/api/hashtag-fatigue', require('./routes/hashtagFatigue'));
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
