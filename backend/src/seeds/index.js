@@ -219,6 +219,28 @@ async function seed() {
       { name: 'YouTube Channel Report', type: 'monthly', platform: 'YouTube', startDate: '2026-03-01', endDate: '2026-03-17', metrics: { subscribers: 28900, views: 145000, watchTime: 8900, avgDuration: '4:32', topVideo: 'AI Social Media Tips 2026' }, status: 'pending', summary: 'Report generation in progress for YouTube channel metrics.' },
     ]);
 
+    const [governedSchema] = await sequelize.query("SELECT to_regclass('public.social_users') AS users_table");
+    if (governedSchema[0]?.users_table) {
+      const governedEmail = process.env.SEED_ADMIN_EMAIL || process.env.ADMIN_EMAIL || 'admin@socialmgr.com';
+      const governedPassword = process.env.SEED_ADMIN_PASSWORD || process.env.ADMIN_PASSWORD || 'password123';
+      const governedName = process.env.BOOTSTRAP_ADMIN_NAME || 'Admin User';
+      const governedTenantName = process.env.BOOTSTRAP_TENANT_NAME || 'Development Tenant';
+      const governedHash = await bcrypt.hash(governedPassword, 10);
+      const [governedUsers] = await sequelize.query(
+        'INSERT INTO social_users(email,password_hash,name) VALUES ($1,$2,$3) ON CONFLICT(email) DO UPDATE SET password_hash=EXCLUDED.password_hash,name=EXCLUDED.name RETURNING id',
+        { bind: [governedEmail, governedHash, governedName] },
+      );
+      let [governedTenants] = await sequelize.query('SELECT id FROM social_tenants WHERE name=$1 ORDER BY id LIMIT 1', { bind: [governedTenantName] });
+      if (!governedTenants[0]) {
+        [governedTenants] = await sequelize.query('INSERT INTO social_tenants(name) VALUES ($1) RETURNING id', { bind: [governedTenantName] });
+      }
+      await sequelize.query(
+        "INSERT INTO social_memberships(tenant_id,user_id,role,active) VALUES ($1,$2,'admin',TRUE) ON CONFLICT(tenant_id,user_id) DO UPDATE SET role='admin',active=TRUE",
+        { bind: [governedTenants[0].id, governedUsers[0].id] },
+      );
+      console.log(`Governed login seeded for ${governedEmail}.`);
+    }
+
     console.log('Seed data inserted successfully!');
     console.log('Login: admin@socialmgr.com / password123');
     process.exit(0);
