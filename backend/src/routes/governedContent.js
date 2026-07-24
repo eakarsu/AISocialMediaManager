@@ -3,6 +3,7 @@ const express=require('express');
 const pool=require('../db');
 const workflow=require('../domain/contentWorkflow');
 const {readiness,requireProviders}=require('../services/providerBoundary');
+const {callOpenRouter}=require('../services/openrouter');
 
 module.exports=function governedContent(authenticate){
   const router=express.Router();
@@ -15,6 +16,24 @@ module.exports=function governedContent(authenticate){
   function fail(res,error,message){if(error.code==='23505')return res.status(409).json({error:'Version or idempotency conflict'});if(error.code==='PROVIDER_NOT_READY')return res.status(503).json({error:error.message});const status=error.status||(/required|invalid|must|cannot|expired|unavailable|transition|reconcile/.test(error.message)?422:500);res.status(status).json({error:status===500?message:error.message});}
 
   router.get('/providers/readiness',roles('creator','editor','reviewer','publisher','auditor','admin'),(_req,res)=>{const result=readiness();res.status(result.ready?200:503).json(result);});
+
+  router.post('/ai/post-draft',roles('creator','editor','admin'),async(req,res)=>{
+    try{
+      const topic=String(req.body?.topic||'').trim();
+      if(!topic)return res.status(422).json({error:'topic is required'});
+      const platform=String(req.body?.platform||'LinkedIn');
+      const tone=String(req.body?.tone||'professional');
+      const result=await callOpenRouter(
+        `Draft a substantive ${tone} social-media post about "${topic}" for ${platform}. Include a concise call to action and three relevant hashtags.`,
+        'You are a social-media strategist. Return polished publication-ready text.',
+      );
+      const persisted=await pool.query(
+        'INSERT INTO social_ai_results(tenant_id,user_id,endpoint,input_data,result,model_used) VALUES($1,$2,$3,$4,$5,$6) RETURNING id',
+        [tenant(req),req.user.id,'post-draft',{topic,platform,tone},{content:result.content},result.model],
+      );
+      res.json({success:true,content:result.content,model:result.model,resultId:persisted.rows[0].id});
+    }catch(error){fail(res,error,'AI post drafting failed');}
+  });
 
   router.post('/sources',roles('creator','editor','admin'),async(req,res)=>{
     try{
