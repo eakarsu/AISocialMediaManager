@@ -2,6 +2,12 @@ require('dotenv').config({ path: require('path').resolve(__dirname, '../../../.e
 const bcrypt = require('bcryptjs');
 const { sequelize, User, Account, Post, Campaign, Hashtag, Template, Analytics, Competitor, BrandVoice, AutoReply, TeamMember, Report } = require('../models');
 
+function requireDemoPassword() {
+  const password = process.env.DEMO_PASSWORD || process.env.SEED_DEMO_PASSWORD || process.env.DEMO_SEED_PASSWORD || '';
+  if (password.length < 12 || password.length > 1024) throw new Error('DEMO_PASSWORD must contain 12-1024 characters');
+  return password;
+}
+
 async function seed() {
   try {
     await sequelize.authenticate();
@@ -9,7 +15,7 @@ async function seed() {
     console.log('Database synced (force). Seeding...');
 
     // Users
-    const password = await bcrypt.hash('password123', 10);
+    const password = await bcrypt.hash(requireDemoPassword(), 10);
     const user = await User.create({ name: 'Admin User', email: 'admin@socialmgr.com', password, role: 'admin' });
 
     // Social Accounts (15)
@@ -242,7 +248,7 @@ async function seed() {
     }
 
     console.log('Seed data inserted successfully!');
-    console.log('Login: admin@socialmgr.com / password123');
+    console.log('Demo login users provisioned from the local environment.');
     process.exit(0);
   } catch (error) {
     console.error('Seeding failed:', error);
