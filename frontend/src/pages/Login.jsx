@@ -98,7 +98,7 @@ export default function Login() {
           className="w-full mt-4 py-3 px-4 bg-slate-700/50 hover:bg-slate-700 border border-slate-600 text-slate-300 font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
         >
           <Zap className="w-4 h-4 text-yellow-400" />
-          Fill Demo Credentials
+          Auto Fill Demo Credentials
         </button>
 
         <p className="text-center text-slate-500 text-xs mt-6">
