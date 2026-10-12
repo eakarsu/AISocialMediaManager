@@ -26,6 +26,16 @@ export default function ContentCalendar() {
   const [calendar, setCalendar] = useState([]);
   const [error, setError] = useState(null);
   const [form, setForm] = useState({ startDate: new Date().toISOString().split('T')[0], industry: 'technology' });
+  const calendarExamples = [
+    { label: 'Software launch', industry: 'B2B software', daysFromToday: 7 },
+    { label: 'Local bakery', industry: 'local bakery and catering', daysFromToday: 14 },
+    { label: 'Fitness studio', industry: 'community fitness studio', daysFromToday: 21 },
+  ];
+  const fillExample = ({ industry, daysFromToday }) => {
+    const date = new Date();
+    date.setDate(date.getDate() + daysFromToday);
+    setForm({ startDate: date.toISOString().split('T')[0], industry });
+  };
 
   const handleGenerate = async () => {
     setLoading(true); setError(null);
@@ -65,6 +75,9 @@ export default function ContentCalendar() {
       </div>
 
       <div className="bg-white rounded-xl shadow p-6 mb-6">
+        <div className="flex flex-wrap gap-2 mb-4" aria-label="Calendar examples">
+          {calendarExamples.map((example) => <button key={example.label} type="button" onClick={() => fillExample(example)} disabled={loading} className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-sm font-medium text-indigo-800 disabled:opacity-50">Fill example · {example.label}</button>)}
+        </div>
         <div className="grid grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>

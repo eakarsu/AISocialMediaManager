@@ -1,3 +1,5 @@
+
+import FullAIExamples, { useFullAIExamples } from "../components/FullAIExamples.jsx";
 import { useEffect, useState } from 'react';
 import { Plus, Search, Sparkles, Users, TrendingUp, Swords } from 'lucide-react';
 import api from '../api';
@@ -29,6 +31,8 @@ const createFields = [
 ];
 
 export default function Competitors() {
+  const fullAIExamples = useFullAIExamples();
+
   const [items, setItems] = useState([]);
   const [selected, setSelected] = useState(null);
   const [creating, setCreating] = useState(false);
@@ -56,7 +60,7 @@ export default function Competitors() {
   const filtered = items.filter(c => c.name?.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-full-ai-workspace="Competitors"><FullAIExamples controller={fullAIExamples} disabled={Boolean(aiLoading)} />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Competitors</h1>
@@ -70,7 +74,7 @@ export default function Competitors() {
       <div className="glass-card rounded-2xl p-5">
         <h3 className="text-sm font-semibold text-purple-300 mb-3 flex items-center gap-2"><Sparkles className="w-4 h-4" /> AI Competitor Analysis</h3>
         <div className="flex gap-3">
-          <input value={aiName} onChange={e => setAiName(e.target.value)} placeholder="Enter competitor name to analyze..." className="flex-1 px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" onKeyDown={e => e.key === 'Enter' && analyzeAI()} />
+          <input value={aiName} onChange={e => setAiName(e.target.value)} placeholder="Enter competitor name to analyze..." className="flex-1 px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" onKeyDown={e => e.key === 'Enter' && analyzeAI()} data-full-ai-field={fullAIExamples.bind({ current: aiName, change: e => setAiName(e.target.value), label: "aiName", manual: false, json: false, sample: '' }, "p1-3706", undefined)} />
           <button onClick={analyzeAI} disabled={aiLoading} className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl text-sm font-medium disabled:opacity-50">Analyze</button>
         </div>
         <AIOutput result={aiResult} loading={aiLoading} />

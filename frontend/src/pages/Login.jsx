@@ -27,8 +27,15 @@ export default function Login() {
   };
 
   const fillDemo = () => {
-    setEmail(import.meta.env.VITE_DEMO_EMAIL || '');
-    setPassword(import.meta.env.VITE_DEMO_PASSWORD || '');
+    const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
+    const demoPassword = import.meta.env.VITE_DEMO_PASSWORD;
+    if (!demoEmail || !demoPassword) {
+      setError('Demo credentials are not configured. Ask an administrator for access.');
+      return;
+    }
+    setEmail(demoEmail);
+    setPassword(demoPassword);
+    setError('');
   };
 
   return (
@@ -94,11 +101,12 @@ export default function Login() {
         </form>
 
         <button
+          type="button"
           onClick={fillDemo}
           className="w-full mt-4 py-3 px-4 bg-slate-700/50 hover:bg-slate-700 border border-slate-600 text-slate-300 font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
         >
           <Zap className="w-4 h-4 text-yellow-400" />
-          Auto Fill Demo Credentials
+          Fill Demo Credentials
         </button>
 
         <p className="text-center text-slate-500 text-xs mt-6">

@@ -1,3 +1,5 @@
+
+import FullAIExamples, { useFullAIExamples } from "../components/FullAIExamples.jsx";
 import { useEffect, useState } from 'react';
 import { Plus, Heart, MessageCircle, Share2, Eye, Search, Sparkles } from 'lucide-react';
 import api from '../api';
@@ -27,6 +29,8 @@ const createFields = [
 ];
 
 export default function Posts() {
+  const fullAIExamples = useFullAIExamples();
+
   const [items, setItems] = useState([]);
   const [selected, setSelected] = useState(null);
   const [creating, setCreating] = useState(false);
@@ -36,7 +40,7 @@ export default function Posts() {
   const [aiTopic, setAiTopic] = useState('');
 
   useEffect(() => { load(); }, []);
-  const load = () => api.get('/posts').then(r => setItems(r.data));
+  const load = () => api.get('/posts').then(r => setItems(Array.isArray(r.data?.data) ? r.data.data : []));
 
   const handleDelete = async (id) => {
     await api.delete(`/posts/${id}`);
@@ -66,7 +70,7 @@ export default function Posts() {
   const filtered = items.filter(p => p.content?.toLowerCase().includes(search.toLowerCase()) || p.platform?.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-full-ai-workspace="Posts"><FullAIExamples controller={fullAIExamples} disabled={Boolean(aiLoading)} />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Posts</h1>
@@ -81,7 +85,7 @@ export default function Posts() {
       <div className="glass-card rounded-2xl p-5">
         <h3 className="text-sm font-semibold text-purple-300 mb-3 flex items-center gap-2"><Sparkles className="w-4 h-4" /> AI Post Generator</h3>
         <div className="flex gap-3">
-          <input value={aiTopic} onChange={e => setAiTopic(e.target.value)} placeholder="Enter a topic to generate a post..." className="flex-1 px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" onKeyDown={e => e.key === 'Enter' && generateAI()} />
+          <input value={aiTopic} onChange={e => setAiTopic(e.target.value)} placeholder="Enter a topic to generate a post..." className="flex-1 px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" onKeyDown={e => e.key === 'Enter' && generateAI()} data-full-ai-field={fullAIExamples.bind({ current: aiTopic, change: e => setAiTopic(e.target.value), label: "aiTopic", manual: false, json: false, sample: '' }, "p1-3930", undefined)} />
           <button onClick={generateAI} disabled={aiLoading} className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl text-sm font-medium disabled:opacity-50">Generate</button>
         </div>
         <AIOutput result={aiResult} loading={aiLoading} />

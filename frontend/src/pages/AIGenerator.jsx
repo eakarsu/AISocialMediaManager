@@ -1,3 +1,5 @@
+
+import FullAIExamples, { useFullAIExamples } from "../components/FullAIExamples.jsx";
 import { useState } from 'react';
 import { Sparkles, FileText, Hash, Image, MessageSquare, CalendarDays, Mic2, FileBarChart } from 'lucide-react';
 import api from '../api';
@@ -15,6 +17,8 @@ const tools = [
 ];
 
 export default function AIGenerator() {
+  const fullAIExamples = useFullAIExamples();
+
   const [activeTool, setActiveTool] = useState(null);
   const [form, setForm] = useState({});
   const [result, setResult] = useState(null);
@@ -39,7 +43,7 @@ export default function AIGenerator() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-full-ai-workspace="AIGenerator"><FullAIExamples controller={fullAIExamples} disabled={Boolean(loading)} />
       <div>
         <h1 className="text-2xl font-bold text-white">AI Generator</h1>
         <p className="text-slate-400 text-sm mt-1">Powered by OpenRouter &middot; Claude AI</p>
@@ -76,13 +80,13 @@ export default function AIGenerator() {
                     value={form[field.key] || ''}
                     onChange={e => setForm({ ...form, [field.key]: e.target.value })}
                     className="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 min-h-[80px]"
-                    required={field.required}
+                    required={field.required} data-full-ai-field={fullAIExamples.bind({ current: form[field.key] || '', change: e => setForm({ ...form, [field.key]: e.target.value }), label: "form[field.key]", manual: false, json: false }, "p1-5752", [(typeof field === 'object' ? field?.key ?? field?.name ?? field?.id ?? '' : field),field.key].join(":"))}
                   />
                 ) : field.type === 'select' ? (
                   <select
                     value={form[field.key] || ''}
                     onChange={e => setForm({ ...form, [field.key]: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" data-full-ai-field={fullAIExamples.bind({ current: form[field.key] || '', change: e => setForm({ ...form, [field.key]: e.target.value }), label: "form[field.key]", manual: false, json: false }, "p1-6216", [(typeof field === 'object' ? field?.key ?? field?.name ?? field?.id ?? '' : field),field.key].join(":"))}
                   >
                     <option value="">Select...</option>
                     {field.options?.map(o => <option key={o} value={o}>{o}</option>)}
@@ -93,7 +97,7 @@ export default function AIGenerator() {
                     value={form[field.key] || ''}
                     onChange={e => setForm({ ...form, [field.key]: e.target.value })}
                     className="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    required={field.required}
+                    required={field.required} data-full-ai-field={fullAIExamples.bind({ current: form[field.key] || '', change: e => setForm({ ...form, [field.key]: e.target.value }), label: "form[field.key]", manual: false, json: false }, "p1-6762", [(typeof field === 'object' ? field?.key ?? field?.name ?? field?.id ?? '' : field),field.key].join(":"))}
                   />
                 )}
               </div>

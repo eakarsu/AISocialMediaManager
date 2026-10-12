@@ -1,3 +1,5 @@
+
+import FullAIExamples, { useFullAIExamples } from "../components/FullAIExamples.jsx";
 import { useEffect, useState } from 'react';
 import { Plus, Search, Sparkles, MessageSquareReply, Zap, Power } from 'lucide-react';
 import api from '../api';
@@ -27,6 +29,8 @@ const createFields = [
 const triggerColors = { keyword: '#3B82F6', sentiment: '#8B5CF6', mention: '#10B981', dm: '#F59E0B' };
 
 export default function AutoReplies() {
+  const fullAIExamples = useFullAIExamples();
+
   const [items, setItems] = useState([]);
   const [selected, setSelected] = useState(null);
   const [creating, setCreating] = useState(false);
@@ -54,7 +58,7 @@ export default function AutoReplies() {
   const filtered = items.filter(r => r.name?.toLowerCase().includes(search.toLowerCase()) || r.trigger?.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-full-ai-workspace="AutoReplies"><FullAIExamples controller={fullAIExamples} disabled={Boolean(aiLoading)} />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Auto Replies</h1>
@@ -68,7 +72,7 @@ export default function AutoReplies() {
       <div className="glass-card rounded-2xl p-5">
         <h3 className="text-sm font-semibold text-purple-300 mb-3 flex items-center gap-2"><Sparkles className="w-4 h-4" /> AI Reply Generator</h3>
         <div className="flex gap-3">
-          <input value={aiMessage} onChange={e => setAiMessage(e.target.value)} placeholder="Enter a message to generate a smart reply..." className="flex-1 px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" onKeyDown={e => e.key === 'Enter' && generateReply()} />
+          <input value={aiMessage} onChange={e => setAiMessage(e.target.value)} placeholder="Enter a message to generate a smart reply..." className="flex-1 px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" onKeyDown={e => e.key === 'Enter' && generateReply()} data-full-ai-field={fullAIExamples.bind({ current: aiMessage, change: e => setAiMessage(e.target.value), label: "aiMessage", manual: false, json: false, sample: '' }, "p1-3599", undefined)} />
           <button onClick={generateReply} disabled={aiLoading} className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl text-sm font-medium disabled:opacity-50">Generate</button>
         </div>
         <AIOutput result={aiResult} loading={aiLoading} />

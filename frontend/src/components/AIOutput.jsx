@@ -1,5 +1,5 @@
 import { Sparkles, Cpu, Clock, Zap } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
+import FormattedAIReport from './FormattedAIReport';
 
 export default function AIOutput({ result, loading }) {
   if (loading) {
@@ -23,7 +23,7 @@ export default function AIOutput({ result, loading }) {
     );
   }
 
-  if (!result) return null;
+  if (result === null || result === undefined) return null;
 
   return (
     <div className="ai-output rounded-2xl p-6 mt-4">
@@ -39,9 +39,7 @@ export default function AIOutput({ result, loading }) {
         </div>
       </div>
 
-      <div className="text-slate-200 text-sm leading-relaxed prose prose-invert max-w-none">
-        <ReactMarkdown>{result.content}</ReactMarkdown>
-      </div>
+      <FormattedAIReport response={result} title="AI Response" />
 
       {result.usage && (
         <div className="mt-4 pt-4 border-t border-slate-700/30 flex items-center gap-6 text-xs text-slate-500">

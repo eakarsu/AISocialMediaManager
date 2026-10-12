@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const auth = require('../middleware/auth');
+const { authenticate: auth } = require('../middleware/auth');
 const { requireRole } = require('../middleware/rbac');
 const { aiRateLimiter } = require('../middleware/rateLimiter');
 const { callOpenRouter } = require('../services/openrouter');

@@ -1,3 +1,5 @@
+
+import FullAIExamples, { useFullAIExamples } from "../components/FullAIExamples.jsx";
 import { useState } from 'react';
 import { Sparkles, Clock, Layers, Activity, Eye, UserSearch } from 'lucide-react';
 import api from '../api';
@@ -72,6 +74,8 @@ const tools = [
 ];
 
 export default function AIInsights() {
+  const fullAIExamples = useFullAIExamples();
+
   const [activeTool, setActiveTool] = useState(null);
   const [form, setForm] = useState({});
   const [result, setResult] = useState(null);
@@ -96,7 +100,7 @@ export default function AIInsights() {
         payload[f.key] = f.type === 'number' ? Number(v) : v;
       });
       const { data } = await api.post(activeTool.endpoint, payload);
-      setResult({ content: JSON.stringify(data, null, 2) });
+      setResult(data);
     } catch (err) {
       const status = err.response?.status;
       const msg = err.response?.data?.error || err.message || 'Failed to generate.';
@@ -106,7 +110,7 @@ export default function AIInsights() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-full-ai-workspace="AIInsights"><FullAIExamples controller={fullAIExamples} disabled={Boolean(loading)} />
       <div>
         <h1 className="text-2xl font-bold text-white">AI Insights</h1>
         <p className="text-slate-400 text-sm mt-1">Posting times, content mix, audience sentiment</p>
@@ -142,7 +146,7 @@ export default function AIInsights() {
                   <select
                     value={form[field.key] || ''}
                     onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" data-full-ai-field={fullAIExamples.bind({ current: form[field.key] || '', change: (e) => setForm({ ...form, [field.key]: e.target.value }), label: "form[field.key]", manual: false, json: false }, "p1-5484", [(typeof field === 'object' ? field?.key ?? field?.name ?? field?.id ?? '' : field),field.key].join(":"))}
                   >
                     <option value="">Select...</option>
                     {field.options?.map((o) => <option key={o} value={o}>{o}</option>)}
@@ -152,7 +156,7 @@ export default function AIInsights() {
                     type={field.type || 'text'}
                     value={form[field.key] || ''}
                     onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" data-full-ai-field={fullAIExamples.bind({ current: form[field.key] || '', change: (e) => setForm({ ...form, [field.key]: e.target.value }), label: "form[field.key]", manual: false, json: false }, "p1-6034", [(typeof field === 'object' ? field?.key ?? field?.name ?? field?.id ?? '' : field),field.key].join(":"))}
                   />
                 )}
               </div>

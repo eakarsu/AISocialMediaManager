@@ -1,5 +1,6 @@
 import { X, Pencil, Trash2, Save, XCircle } from 'lucide-react';
 import { useState } from 'react';
+import FormattedAIReport from './FormattedAIReport';
 
 export default function DetailModal({ item, fields, onClose, onDelete, onEdit, title }) {
   const [editing, setEditing] = useState(false);
@@ -61,7 +62,9 @@ export default function DetailModal({ item, fields, onClose, onDelete, onEdit, t
                 )
               ) : (
                 <div className="px-4 py-2.5 bg-slate-800/50 rounded-xl text-slate-200 text-sm whitespace-pre-wrap">
-                  {typeof item[key] === 'object' ? JSON.stringify(item[key], null, 2) : (item[key] ?? '—')}
+                  {(item[key] !== null && typeof item[key] === 'object') || (typeof item[key] === 'string' && /^[\s]*[\[{]/.test(item[key]))
+                    ? <FormattedAIReport response={item[key]} title={label} />
+                    : typeof item[key] === 'boolean' ? (item[key] ? 'Yes' : 'No') : (item[key] ?? '—')}
                 </div>
               )}
             </div>
