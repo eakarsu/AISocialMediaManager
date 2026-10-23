@@ -13,7 +13,7 @@ export default function DetailModal({ item, fields, onClose, onDelete, onEdit, t
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
-      <div className="glass-card rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto m-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+      <div role="dialog" aria-modal="true" className="glass-card rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto m-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between p-6 border-b border-slate-700/50">
           <h2 className="text-xl font-bold text-white">{title || 'Details'}</h2>
           <div className="flex items-center gap-2">
@@ -69,6 +69,17 @@ export default function DetailModal({ item, fields, onClose, onDelete, onEdit, t
               )}
             </div>
           ))}
+        </div>
+        <div className="flex items-center justify-end gap-3 p-6 border-t border-slate-700/50">
+          <button type="button" onClick={() => editing ? handleSave() : setEditing(true)} className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium">
+            {editing ? 'Save' : 'Edit'}
+          </button>
+          <button type="button" onClick={() => onDelete ? onDelete(item.id) : onClose()} className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-sm font-medium">
+            Delete
+          </button>
+          <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl border border-slate-600 text-slate-300 hover:bg-slate-800 text-sm font-medium">
+            Cancel
+          </button>
         </div>
       </div>
     </div>

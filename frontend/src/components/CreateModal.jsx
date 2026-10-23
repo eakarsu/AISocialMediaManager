@@ -15,7 +15,7 @@ export default function CreateModal({ fields, onClose, onCreate, title }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
-      <div className="glass-card rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto m-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+      <div className="glass-card rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto m-4 shadow-2xl" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between p-6 border-b border-slate-700/50">
           <h2 className="text-xl font-bold text-white">{title || 'Create New'}</h2>
           <button onClick={onClose} className="p-2 rounded-lg hover:bg-slate-700 text-slate-400"><X className="w-4 h-4" /></button>
